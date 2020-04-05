@@ -1,4 +1,6 @@
 import 'package:covidnineteenina/bloc/home/home_bloc.dart';
+import 'package:covidnineteenina/model/news_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 20.w, // has the effect of softening the shadow
+                    blurRadius: 5.w, // has the effect of softening the shadow
                     spreadRadius: 1.w, // has the effect of extending the shadow
                     offset: Offset(
                       0, // horizontal, move right 10
@@ -271,6 +273,111 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  _buildNews(BuildContext context){
+    return Container(
+      color: Color(0xfffefefe),
+      height: 280.w,
+      padding: EdgeInsets.only(bottom: 20.w, top: 20.w),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 16.w),
+            child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Berita Terbaru", style: TextStyle(fontFamily: "Poppins", fontWeight: FontWeight.w700, fontSize: 12.sp),),
+                    Text("Diperbarui 3 jam yang lalu", style: TextStyle(fontFamily: "Poppins", fontWeight: FontWeight.w400, fontSize: 10.sp),),
+                  ],), Container(
+                  width: 72.w,
+                  height: 26.w,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(image: AssetImage("assets/icons/ic_show_detail.png"), fit: BoxFit.fitWidth),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _buildNewsList(context)
+        ],
+      ),
+    );
+  }
+
+  _buildNewsList(BuildContext context){
+    List<NewsModel> newsList = [
+      NewsModel(title: "Melonjak Jadi 893, Ini Sebaran Kasus Positif Corona",imageUrl: "assets/icons/news1.png"),
+      NewsModel(title: "Ini Grafik Kasus Positif Corona di RI, Kian Tinggi",imageUrl: "assets/icons/news2.png"),
+      NewsModel(title: "Poin-poin Terkini Pemerintah soal Virus Corona",imageUrl: "assets/icons/news3.png"),
+      NewsModel(title: "192 ribu peralatan kesehatan telah tiba di Indonesia",imageUrl: "assets/icons/news4.png"),
+
+    ];
+    return SizedBox(height:187.w,child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+        itemCount: newsList.length,
+        itemBuilder: (BuildContext context, int index) {
+        if(index == 0){
+          return Padding(
+            padding: EdgeInsets.only(left: 8.w),
+            child: newsItem(newsList[index].imageUrl, newsList[index].title),
+          );
+        }else if(index == newsList.length-1){
+          return Padding(
+            padding: EdgeInsets.only(right: 20.w),
+            child: newsItem(newsList[index].imageUrl, newsList[index].title),
+          );
+        }else{
+          return newsItem(newsList[index].imageUrl, newsList[index].title);
+        }
+      }
+    ),);
+  }
+
+  Widget newsItem(String assetImage, String title){
+    return Container(
+      margin: EdgeInsets.only(left: 12.w, bottom: 2.w),
+      width: 142.w,
+      height: 185.w,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(18.w)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            blurRadius: 1.w, // has the effect of softening the shadow
+            spreadRadius: 1.w, // has the effect of extending the shadow
+            offset: Offset(
+              0, // horizontal, move right 10
+              0, // vertical, move down 10
+            ),
+          )
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: 142.w,
+            height: 103.w,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(18.w),topRight: Radius.circular(18.w)),
+              image: DecorationImage(image: AssetImage(assetImage), fit: BoxFit.cover)
+            ),
+          ),
+          Container(padding: EdgeInsets.fromLTRB(14.w, 14.w, 14.w, 14.w),
+          width: 142.w,
+          height: 82.w,
+          child: Text(title, style: TextStyle(fontWeight: FontWeight.w700, fontFamily: "Poppins", fontSize: 11.sp ), maxLines: 3, overflow: TextOverflow.ellipsis,),)
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, width: 320, height: 568, allowFontScaling: true);
@@ -298,7 +405,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     _buildIndonesianCovidSummaryCase(context,state),
-                    _buildGlobalCovidSummaryCase(context, state)
+                    _buildNews(context),
+                    _buildGlobalCovidSummaryCase(context, state),
                   ],
                 )
 

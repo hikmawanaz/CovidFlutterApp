@@ -1,4 +1,5 @@
 import 'package:covidnineteenina/screen/home_screen.dart';
+import 'package:covidnineteenina/screen/news_screen.dart';
 import 'package:covidnineteenina/screen/splash_screen.dart';
 import 'package:covidnineteenina/util/simple_bloc_delegate.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: NewsScreen(),
     );
   }
 }
